@@ -1,0 +1,63 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "卖座电影"
+			}
+		},
+		{
+			"path":"pages/cinemas/cinemas"
+		}
+	    ,{
+            "path" : "pages/news/news"
+        }
+        ,{
+            "path" : "pages/film/film",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/search/search",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "卖座电影",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"navigationStyle":"custom"
+	},
+	"tabBar": {
+		"color":"#797d82",
+		"selectedColor":"#ff5f16",
+		"borderStyle":"white",
+		"backgroundColor": "#ffffff",
+		"list":[{
+			"pagePath":"pages/index/index",
+			"iconPath":"static/imgs/index_normal.png",
+			"selectedIconPath":"static/imgs/index_selected.png",
+			"text":"电影"
+		},{
+			"pagePath":"pages/cinemas/cinemas",
+			"iconPath":"static/imgs/cinemas_normal.png",
+			"selectedIconPath":"static/imgs/cinemas_selected.png",
+			"text":"影院"
+		}, {
+			"pagePath":"pages/news/news",
+			"iconPath":"static/imgs/news_normal.png",
+			"selectedIconPath":"static/imgs/news_selected.png",
+			"text":"资讯"
+		}]
+	}
+}
