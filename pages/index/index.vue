@@ -3,11 +3,8 @@
 		<view class="status_bar"></view>
 		<view class="banner">
 			<swiper autoplay="true" circular="true">
-				<swiper-item>
-					<img src="https://static.maizuo.com/v5/upload/189bcf606b4bf49ad5de201a2ea5024d.jpg?x-oss-process=image/quality,Q_70">
-				</swiper-item>
-				<swiper-item>
-					<img src="https://static.maizuo.com/v5/upload/189bcf606b4bf49ad5de201a2ea5024d.jpg?x-oss-process=image/quality,Q_70">
+				<swiper-item v-for="value in bannerList" :key="value.name">
+					<img :src="value.pic">
 				</swiper-item>
 			</swiper>
 		</view>
@@ -20,13 +17,13 @@
 				</view>
 			</scroll-view>
 			<view class="cu-load loading" v-if="movieList.length==0"></view>
-			<view v-for="index in 10" :key="index" class="movieitem" @click="navToFilm(index)">
-				<view class="movie-pic"><image src="https://pic.maizuo.com/usr/movie/3f97c0ef0eca443b9307fad1c05c188e.jpg?x-oss-process=image/quality,Q_70"/></view>
+			<view v-for="value in movieList" :key="value.id" class="movieitem" @click="navToFilm(value.id)">
+				<view class="movie-pic"><image :src="value.pic"/></view>
 				<view class="movie-detail">
-					<view class="title">你好，李焕英<text>2D</text></view>
-					<view class="grade">观众评分 <text>7.4</text></view>
-					<view class="author">主演：<text>贾玲 张小斐 沈腾 陈赫</text></view>
-					<view class="info"><text>中国大陆</text>|<text>110分钟</text></view>
+					<view class="title">{{ value.name }}<text>{{ value.type }}</text></view>
+					<view class="grade">观众评分 <text>{{ value.grade }}</text></view>
+					<view class="author">主演：{{ value.actors }}</view>
+					<view class="info"><text>{{ value.nation }}</text>|<text>110分钟</text></view>
 				</view>
 				<view class="movie-btn"><text @click.native.top="shop">购票</text></view>
 			</view>
@@ -41,15 +38,20 @@
 				title: 'Hello',
 				tabIndex: 0,
 				tabList: ['正在热映', '即将上映'],
-				movieList: []
+				movieList: [],
+				bannerList: [],
 			}
 		},
 		onLoad() {
 			console.log("第一次加载");
+			this.getBannerList(310100);
+			this.getMovieList(310100, 1, 1);
 		},
 		methods: {
 			tabSelected(e) {
+				this.movieList = [];
 				this.tabIndex = e.currentTarget.dataset.id;
+				this.getMovieList(310100, parseInt(this.tabIndex) + 1, 1);
 			},
 			navToFilm(id) {
 				uni.navigateTo({
@@ -61,6 +63,26 @@
 			},
 			shop() {
 				console.log("购票");
+			},
+			getBannerList(id) {
+				let that = this;
+				uni.request({
+					url:`http://192.168.31.183:3000/banner?id=${id}`,
+					method:'GET',
+					success(e) {
+						that.bannerList = e.data;
+					}
+				})
+			},
+			getMovieList(id,type,page) {
+				let that = this;
+				uni.request({
+					url:`http://192.168.31.183:3000/film?id=${id}&page=${page}&type=${type}`,
+					method:'GET',
+					success(e) {
+						that.movieList = e.data;
+					}
+				})
 			}
 		}
 	}
@@ -121,6 +143,7 @@
 	.movie-detail {
 		flex: 6.5;
 		padding-left: 10px;
+		overflow: hidden;
 	}
 	.movie-pic image {
 		width: 132rpx;

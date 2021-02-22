@@ -3,27 +3,27 @@
 		<view class="status_bar"></view>
 		<view class="header"><image @tap="back" src="../../static/imgs/back.png"></image></view>
 		<view class="cover">
-			<image class="cover-img" :src="cover" mode="center"></image>
+			<image class="cover-img" :src="film.poster" mode="center"></image>
 			<view class="fim-detail">
 				<view class="title">
-					<view class="name">你好，李焕英<text>2D</text></view>
-					<view class="grade"><text>7.4</text>分</view>
+					<view class="name">{{film.name}}<text>{{film.filmType.name}}</text></view>
+					<view class="grade"><text>{{film.grade}}</text>分</view>
 				</view>
-				<view class="detail">喜剧 | 剧情</view>
+				<view class="detail">{{film.category}}</view>
 				<view class="time"><text>2021-02-21</text>上映</view>
-				<view class="info"><text>中国大陆</text>|<text>128</text>分钟</view>
-				<view class="desc" :class="isDown?'active':''">2001年的某一天，刚刚考上大学的贾晓玲（贾玲 饰）经历了人生中的一次大起大落。一心想要成为母亲骄傲的她却因母亲突遭严重意外，而悲痛万分。在贾晓玲情绪崩溃的状态下，竟意外的回到了 1981 年，并与年轻的母亲李焕英（张小斐 饰）相遇，二人形影不离，宛如闺蜜。与此同时，也结识了一群天真善良的好朋友。晓玲以为来到了这片“广阔天地”，她可以凭借自己超前的思维，让母亲“大有作为”，但结果却让晓玲感到意外......</view>
+				<view class="info"><text>{{film.nation}}</text>|<text>{{film.runtime}}</text>分钟</view>
+				<view class="desc" :class="isDown?'active':''">{{film.synopsis}}</view>
 				<view class="more" :class="isDown?'down':''" @tap="down"><image src="../../static/imgs/down.png"></image></view>
 			</view>
 		</view>
 		<view class="author-box">
 			<text>演职人员</text>
 			<swiper :display-multiple-items="4">
-				<swiper-item v-for="index in 5" :key="index">
+				<swiper-item v-for="(value, index) in film.actors" :key="index">
 					<view class="author-item">
-						<image mode="aspectFill" src="https://pic.maizuo.com/usr/movie/577c7d72a1908638a805b4be88aeb791.jpg?x-oss-process=image/quality,Q_70"></image>
-						<text>贾玲</text>
-						<text>导演</text>
+						<image mode="aspectFill" :src="value.avatarAddress"></image>
+						<text>{{value.name}}</text>
+						<text>{{value.role}}</text>
 					</view>
 				</swiper-item>
 			</swiper>
@@ -47,11 +47,19 @@
 		data() {
 			return {
 				isDown: false,
-				cover: 'https://pic.maizuo.com/usr/movie/962152780002ba0925aabe6bed25576f.jpg?x-oss-process=image/quality,Q_70',
+				film: {},
 			}
 		},
 		onLoad(options) {
 			const id = options.id;
+			let that = this;
+			uni.request({
+				url: `http://192.168.31.183:3000/filmdetail?id=${id}&city=310100`,
+				method: 'GET',
+				success(e) {
+					that.film = e.data;
+				}
+			})
 		},
 		methods: {
 			back() {
@@ -61,7 +69,6 @@
 				});
 			},
 			down() {
-				console.log("牛逼");
 				this.isDown = !this.isDown;
 			}
 		}

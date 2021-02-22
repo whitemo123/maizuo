@@ -1,12 +1,12 @@
 <template>
 	<view>
-		<view v-for="index in cinemaList" :key="index" class="film-item">
+		<view v-for="value in cinemaList" :key="value.cinemaId" class="film-item">
 			<view class="film-info-lf">
-				<text>上海枫泾天娱影院</text>
-				<text>上海市朱泾人民路160号图书影视商厦6楼（近人民路）</text>
+				<text>{{ value.name }}</text>
+				<text>{{ value.address }}</text>
 			</view>
 			<view class="film-info-rt">
-				<view class="price">￥<text>43</text>起</view>
+				<view class="price">￥<text>{{ value.lowPrice | priceFilter }}</text>起</view>
 				<text>803.5km</text>
 			</view>
 		</view>
@@ -19,6 +19,11 @@
 			cinemaList: {
 				type: Array,
 				required: true,
+			}
+		},
+		filters: {
+			priceFilter(num) {
+				return num / 100;
 			}
 		}
 	}
@@ -33,18 +38,19 @@
 		justify-content: center;
 		align-items: center;
 		border-top: 1px solid #ededed;
+		overflow: hidden;
 	}
 	.film-info-lf {
-		flex: 7;
+		flex: 8;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: left;
+		overflow: hidden;
 	}
 	.film-info-lf text:nth-child(1) {
 		color: #191a1b;
 		font-size: 30rpx;
-		max-width: 80%;
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
@@ -53,13 +59,13 @@
 		color: #797d82;
 		font-size: 24rpx;
 		margin-top: 10rpx;
-		max-width: 80%;
+		max-width: 95%;
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 	}
 	.film-info-rt {
-		flex: 3;
+		flex: 2;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;

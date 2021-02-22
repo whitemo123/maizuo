@@ -9,16 +9,6 @@
 			</view>
 		</view>
 		<view class="film-list">
-			<!-- <view v-for="index in 30" :key="index" class="film-item">
-				<view class="film-info-lf">
-					<text>上海枫泾天娱影院</text>
-					<text>上海市朱泾人民路160号图书影视商厦6楼（近人民路）</text>
-				</view>
-				<view class="film-info-rt">
-					<view class="price">￥<text>43</text>起</view>
-					<text>803.5km</text>
-				</view>
-			</view> -->
 			<cinema-item :cinemaList="cinemaList"></cinema-item>
 		</view>
 	</view>
@@ -33,8 +23,18 @@
 		},
 		data() {
 			return {
-				cinemaList: [{},{},{}],
+				cinemaList: [],
 			}
+		},
+		onLoad() {
+			let that = this;
+			uni.request({
+				url: `http://192.168.31.183:3000/cinema?id=310100`,
+				method:'GET',
+				success(e) {
+					that.cinemaList = e.data;
+				}
+			})
 		},
 		methods: {
 			search() {
